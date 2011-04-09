@@ -1,0 +1,59 @@
+===============================================================================
+wp2print - Convert WordPress Blog to print ready PDF
+===============================================================================
+
+ABOUT 
+
+This project contains code to export posts from WordPress and convert them into
+DocBook XML. The resulting DocBook is then converted to XSL-FO which can be
+used for conversion into PDF.
+
+
+Example usage (see Makefile for complete example):
+
+  $ php wp2docbook.php -b -o quasi-docbook.xml
+  $ xsltproc \
+	--stringparam media.file.path '/var/www/blog' \
+	--stringparam blog.url 'http://localhost/blog/' \
+	wp-html2docbook.xsl quasi-docbook.xml > docbook-final.xml
+  $ xsltproc /path/to/docbook-xsl/fo/docbook.xsl docbook-final.xml > book.fo
+  $ fop book.fo book.pdf
+
+SOURCE CODE
+
+- wp2docbook.php           - Main driver to convert WordPress to quasi-DocBook
+- wp-html2docbook.xsl      - XSLT to convert quasi-DocBook to valid DocBook
+- lib/config.php           - Configuration file (defines file paths / settings)
+- lib/export-docbook.php   - Code for exporting WordPress Posts as DocBook
+- conf/userconf.xconf      - Apache FOP config file for embedding fonts
+- Makefile                 - Create print ready PDF
+
+
+REQUIRED SOFTWARE
+
+- DocBook XSL stylesheets: http://docbook.sourceforge.net/
+- XSLT processor: xsltproc (libXML), Saxon, Xalan, etc.
+- Apache FOP: http://xmlgraphics.apache.org/fop/
+- WordPress (access to the install directory)
+
+SIMPLE EXAMPLE BLOG
+
+For demonstration purposes only, I've included an export of a simple blog
+consisting of posts of Shakespeare's sonnets. To run the example:
+
+1. Install a fresh copy of WordPress
+2. Install the wordpress-importer plugin
+3. Import the contents from sample/shakespeare-blog-wordpress-export.xml
+4. Edit the lib/config.php file with the appropriate settings
+5. Edit the conf/userconf.xconf file to the full path of truetype fonts
+6. Edit the Makefile and set the URL and full path to the WordPress install
+7. $ make
+8. View book.pdf
+
+The steps outlined above are only guidelines and some extra finagling may be in
+order.
+
+AUTHOR
+
+wp2print was written by Andrew E. Bruno <aeb@qnot.org>
+
