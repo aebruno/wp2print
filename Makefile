@@ -8,6 +8,7 @@
 XSLTPROC=/usr/bin/xsltproc
 FOP=/usr/bin/fop
 PHP=/usr/bin/php
+DB_STYLE_SHEET=/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl
 
 
 all: prepare export-docbook docbook-final fo pdf
@@ -45,7 +46,7 @@ fo: docbook-final
     --stringparam dingbat.font.family Times \
     --stringparam generate.toc 'book toc title' \
     --stringparam hyphenate false \
-    /usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl \
+    ${DB_STYLE_SHEET} \
     scratch/docbook-final.xml > scratch/book.fo
 
 pdf: fo
